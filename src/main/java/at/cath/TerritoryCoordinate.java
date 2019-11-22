@@ -1,21 +1,38 @@
 package at.cath;
 
-import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@AllArgsConstructor
 public class TerritoryCoordinate {
 
     @Getter
-    @EqualsAndHashCode.Include
-    private int coordinate;
+    private int chunkX;
+    @Getter
+    private int chunkZ;
 
-    public static short[] getCoordinatesFromIndex(int index) {
+    @Override
+    public int hashCode() {
+        return chunkX ^ (chunkZ << 16);
+    }
+
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        } else if (!(o instanceof TerritoryCoordinate)) {
+            return false;
+        } else {
+            TerritoryCoordinate other = (TerritoryCoordinate) o;
+            return this.getChunkX() == other.getChunkX() && this.getChunkZ() == other.getChunkZ();
+        }
+    }
+
+    /*private static short[] getCoordinatesFromIndex(int index) {
         return new short[]{(short) (index >>> 16), (short) index};
     }
 
-    public static int getIndexFromCoordinates(short x, short z) {
-        return (x << 16) | (z & 0xFFFF);
-    }
+    private static int getIndexFromCoordinates(int chunkX, int chunkZ) {
+        return (chunkX << 16) | (chunkZ & 0xFFFF);
+    }*/
 
 }

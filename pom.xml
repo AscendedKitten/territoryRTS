@@ -9,10 +9,16 @@
     <version>1.0</version>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Build -->
+        <project.build.source.Encoding>UTF-8</project.build.source.Encoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+
+        <!-- Dependencies -->
         <lombok.version>1.18.10</lombok.version>
+        <junit-jupiter-api.artifactId>junit-jupiter-api</junit-jupiter-api.artifactId>
+        <mockito-core.version>2.27.0</mockito-core.version>
+        <assertj-core.version>3.11.1</assertj-core.version>
     </properties>
 
     <dependencies>
@@ -21,6 +27,30 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
             <version>${lombok.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>${junit-jupiter-api.artifactId}</artifactId>
+            <version>5.5.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
