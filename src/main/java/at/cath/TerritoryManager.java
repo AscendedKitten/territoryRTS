@@ -12,32 +12,29 @@ public enum TerritoryManager {
     @Getter
     private final Map<TerritoryCoordinate, Territory> territories = new HashMap<>();
 
-    public TerritoryManager getInstance() {
-        return INSTANCE;
-    }
-
     public Territory findByCoordinate(TerritoryCoordinate coordinate) {
         return territories.get(coordinate);
     }
 
-    public Territory findNorthOf(Territory territory) {
+    public Territory findAdjacentOf(Territory territory, Direction direction) {
         TerritoryCoordinate current = territory.getTerritoryCoordinate();
-        return territories.get(new TerritoryCoordinate(current.getChunkX(), current.getChunkZ() - 1));
-    }
+        TerritoryCoordinate destination = current;
 
-    public Territory findSouthOf(Territory territory) {
-        TerritoryCoordinate current = territory.getTerritoryCoordinate();
-        return territories.get(new TerritoryCoordinate(current.getChunkX(), current.getChunkZ() + 1));
-    }
-
-    public Territory findEastOf(Territory territory) {
-        TerritoryCoordinate current = territory.getTerritoryCoordinate();
-        return territories.get(new TerritoryCoordinate(current.getChunkX() + 1, current.getChunkZ()));
-    }
-
-    public Territory findWestOf(Territory territory) {
-        TerritoryCoordinate current = territory.getTerritoryCoordinate();
-        return territories.get(new TerritoryCoordinate(current.getChunkX() - 1, current.getChunkZ()));
+        switch (direction) {
+            case NORTH:
+                destination = new TerritoryCoordinate(current.getChunkX(), current.getChunkZ() - 1);
+                break;
+            case SOUTH:
+                destination = new TerritoryCoordinate(current.getChunkX(), current.getChunkZ() + 1);
+                break;
+            case EAST:
+                destination = new TerritoryCoordinate(current.getChunkX() + 1, current.getChunkZ());
+                break;
+            case WEST:
+                destination = new TerritoryCoordinate(current.getChunkX() - 1, current.getChunkZ());
+                break;
+        }
+        return territories.get(destination);
     }
 
 

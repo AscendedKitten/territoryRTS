@@ -21,10 +21,10 @@ public class TerritoryNavigationTest {
     void ensureAdjacentRetrieval() {
         Territory origin = directionalTerritories.get(0);
 
-        assertThat(territoryManager.findNorthOf(origin)).isEqualTo(directionalTerritories.get(1));
-        assertThat(territoryManager.findSouthOf(origin)).isEqualTo(directionalTerritories.get(2));
-        assertThat(territoryManager.findEastOf(origin)).isEqualTo(directionalTerritories.get(3));
-        assertThat(territoryManager.findWestOf(origin)).isEqualTo(directionalTerritories.get(4));
+        assertThat(territoryManager.findAdjacentOf(origin, Direction.NORTH)).isEqualTo(directionalTerritories.get(1));
+        assertThat(territoryManager.findAdjacentOf(origin, Direction.SOUTH)).isEqualTo(directionalTerritories.get(2));
+        assertThat(territoryManager.findAdjacentOf(origin, Direction.EAST)).isEqualTo(directionalTerritories.get(3));
+        assertThat(territoryManager.findAdjacentOf(origin, Direction.WEST)).isEqualTo(directionalTerritories.get(4));
     }
 
 }
