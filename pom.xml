@@ -19,6 +19,8 @@
         <junit-jupiter-api.artifactId>junit-jupiter-api</junit-jupiter-api.artifactId>
         <mockito-core.version>2.27.0</mockito-core.version>
         <assertj-core.version>3.11.1</assertj-core.version>
+        <slf4j-api.version>1.7.29</slf4j-api.version>
+        <log4j.version>1.2.17</log4j.version>
     </properties>
 
     <dependencies>
@@ -52,7 +54,21 @@
             <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j-api.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
     </dependencies>
-
-
 </project>

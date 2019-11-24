@@ -7,13 +7,13 @@ import lombok.Getter;
 public class TerritoryCoordinate {
 
     @Getter
-    private int chunkX;
+    private int startChunkX;
     @Getter
-    private int chunkZ;
+    private int startChunkZ;
 
     @Override
     public int hashCode() {
-        return chunkX ^ (chunkZ << 16);
+        return startChunkX ^ (startChunkZ << 16);
     }
 
     public boolean equals(Object o) {
@@ -23,16 +23,40 @@ public class TerritoryCoordinate {
             return false;
         } else {
             TerritoryCoordinate other = (TerritoryCoordinate) o;
-            return this.getChunkX() == other.getChunkX() && this.getChunkZ() == other.getChunkZ();
+            return this.getStartChunkX() == other.getStartChunkX() && this.getStartChunkZ() == other.getStartChunkZ();
         }
+    }
+
+    public int getXMin() {
+        return startChunkX * 512;
+    }
+
+    public int getXMax() {
+        return (startChunkX + 1) * 512;
+    }
+
+    public int getZMin() {
+        return startChunkZ * 512;
+    }
+
+    public int getZMax() {
+        return (startChunkZ + 1) * 512;
+    }
+
+    public int getYMin() {
+        return 0;
+    }
+
+    public int getYMax() {
+        return 255;
     }
 
     /*private static short[] getCoordinatesFromIndex(int index) {
         return new short[]{(short) (index >>> 16), (short) index};
     }
 
-    private static int getIndexFromCoordinates(int chunkX, int chunkZ) {
-        return (chunkX << 16) | (chunkZ & 0xFFFF);
+    private static int getIndexFromCoordinates(int startChunkX, int startChunkZ) {
+        return (startChunkX << 16) | (startChunkZ & 0xFFFF);
     }*/
 
 }

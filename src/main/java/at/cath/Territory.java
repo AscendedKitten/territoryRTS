@@ -10,5 +10,7 @@ public class Territory {
     private Kingdom kingdom;
     private TerritoryCoordinate territoryCoordinate;
 
-
+    public int distanceTo(Territory territory) {
+        return TerritoryManager.getInstance().distanceInTerritories(this, territory);
+    }
 }
