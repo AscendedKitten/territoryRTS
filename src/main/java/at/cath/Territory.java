@@ -21,6 +21,4 @@ public class Territory {
     public int distanceTo(Territory territory) {
         return TerritoryManager.getInstance().distanceInTerritories(this, territory);
     }
-
-
 }

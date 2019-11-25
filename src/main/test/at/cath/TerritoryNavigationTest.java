@@ -24,12 +24,13 @@ public class TerritoryNavigationTest {
     void ensureAdjacentRetrieval() {
         Territory origin = cardinalTerritories.get(0);
 
-        assertThat(territoryManager.findAdjacentOf(origin, Direction.NORTH)).isEqualTo(cardinalTerritories.get(1));
-        assertThat(territoryManager.findAdjacentOf(origin, Direction.SOUTH)).isEqualTo(cardinalTerritories.get(2));
-        assertThat(territoryManager.findAdjacentOf(origin, Direction.EAST)).isEqualTo(cardinalTerritories.get(3));
-        assertThat(territoryManager.findAdjacentOf(origin, Direction.WEST)).isEqualTo(cardinalTerritories.get(4));
+        assertThat(territoryManager.findAdjacentOf(origin, Direction.NORTH).get()).isEqualTo(cardinalTerritories.get(1));
+        assertThat(territoryManager.findAdjacentOf(origin, Direction.SOUTH).get()).isEqualTo(cardinalTerritories.get(2));
+        assertThat(territoryManager.findAdjacentOf(origin, Direction.EAST).get()).isEqualTo(cardinalTerritories.get(3));
+        assertThat(territoryManager.findAdjacentOf(origin, Direction.WEST).get()).isEqualTo(cardinalTerritories.get(4));
     }
 
+    //abandon
     @Test
     void ensureTerritoryBounds() {
         //Testing for (0,0)
@@ -57,15 +58,14 @@ public class TerritoryNavigationTest {
     @Test
     void ensureFindSurroundings() {
         territoryManager.remove(cardinalTerritories.get(0).getTerritoryCoordinate());
-        assertThat(territoryManager.getInRangeOf(cardinalTerritories.get(1)).size()).isEqualTo(0);
+        assertThat(territoryManager.getInRangeOf(cardinalTerritories.get(1)).size()).isEqualTo(4);
 
         territoryManager.add(cardinalTerritories.get(0).getTerritoryCoordinate(), cardinalTerritories.get(0));
-        assertThat(territoryManager.getInRangeOf(cardinalTerritories.get(1)).size()).isEqualTo(5);
+        assertThat(territoryManager.getInRangeOf(cardinalTerritories.get(0)).size()).isEqualTo(5);
     }
 
     @Test
     void ensureAllegianceShift() {
-        territoryManager.updateAllegiance(cardinalTerritories.get(0));
         for (Territory t : territoryManager.getTerritories().values())
             System.out.println(String.format("%8s", Integer.toBinaryString(t.getAllegiance() & 0xFF)).replace(' ', '0') + " | " + t.getKingdom().getName());
     }

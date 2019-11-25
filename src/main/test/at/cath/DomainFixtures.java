@@ -9,13 +9,10 @@ public class DomainFixtures {
     public static List<Territory> getDirectionalTerritories() {
 
         TerritoryCoordinate coordOrigin = new TerritoryCoordinate(0, 0);
-        TerritoryCoordinate coordNorth = new TerritoryCoordinate(0, -32);
-        TerritoryCoordinate coordNorth2 = new TerritoryCoordinate(0, -64);
-        TerritoryCoordinate coordNorth3 = new TerritoryCoordinate(0, -96);
-        TerritoryCoordinate coordSouth = new TerritoryCoordinate(0, 32);
-
-        TerritoryCoordinate coordEast = new TerritoryCoordinate(32, 0);
-        TerritoryCoordinate coordWest = new TerritoryCoordinate(-32, 0);
+        TerritoryCoordinate coordNorth = new TerritoryCoordinate(0, -1);
+        TerritoryCoordinate coordSouth = new TerritoryCoordinate(0, 1);
+        TerritoryCoordinate coordEast = new TerritoryCoordinate(1, 0);
+        TerritoryCoordinate coordWest = new TerritoryCoordinate(-1, 0);
 
         Territory terrOrigin = new Territory(new Kingdom("origin", DEFAULT_ALLIANCE), coordOrigin);
         Territory terrNorth = new Territory(new Kingdom("north", DEFAULT_ALLIANCE), coordNorth);

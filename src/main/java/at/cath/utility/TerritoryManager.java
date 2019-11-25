@@ -28,37 +28,12 @@ public enum TerritoryManager {
 
     public Optional<Territory> findAdjacentOf(Territory territory, Direction direction) {
         TerritoryCoordinate current = territory.getTerritoryCoordinate();
-        TerritoryCoordinate destination = current;
 
-        switch (direction) {
-            case NORTH:
-                destination = new TerritoryCoordinate(current.getStartChunkX(), current.getStartChunkZ() - 32);
-                break;
-            case SOUTH:
-                destination = new TerritoryCoordinate(current.getStartChunkX(), current.getStartChunkZ() + 32);
-                break;
-            case EAST:
-                destination = new TerritoryCoordinate(current.getStartChunkX() + 32, current.getStartChunkZ());
-                break;
-            case WEST:
-                destination = new TerritoryCoordinate(current.getStartChunkX() - 32, current.getStartChunkZ());
-                break;
-            case NORTH_EAST:
-                destination = new TerritoryCoordinate(current.getStartChunkX() + 32, current.getStartChunkZ() - 32);
-                break;
-            case NORTH_WEST:
-                destination = new TerritoryCoordinate(current.getStartChunkX() - 32, current.getStartChunkZ() - 32);
-                break;
-            case SOUTH_EAST:
-                destination = new TerritoryCoordinate(current.getStartChunkX() + 32, current.getStartChunkZ() + 32);
-                break;
-            case SOUTH_WEST:
-                destination = new TerritoryCoordinate(current.getStartChunkX() - 32, current.getStartChunkZ() + 32);
-                break;
-        }
-        return Optional.ofNullable(territories.get(destination));
+        return Optional.ofNullable(territories.get(
+                new TerritoryCoordinate(current.getStartChunkX() + direction.getXShift(),
+                        current.getStartChunkZ() + direction.getZShift())));
     }
-
+    
     //rework
     public int distanceInTerritories(Territory territory1, Territory territory2) {
         TerritoryCoordinate territoryCoordinate1 = territory1.getTerritoryCoordinate();
@@ -93,17 +68,15 @@ public enum TerritoryManager {
     private List<Territory> search(Territory origin, List<Territory> territories) {
         if (territories == null)
             territories = new ArrayList<>();
-
-        for (Direction direction : Direction.values()) {
-            Optional<Territory> next = findAdjacentOf(origin, direction);
-
-            if (next.map(Territory::getKingdom).filter(kingdom -> kingdom.equals(origin.getKingdom())).isPresent()) {
-
+        for (int i = 0; i < Direction.values().length; i++) {
+            Optional<Territory> next = findAdjacentOf(origin, Direction.values()[i]);
+            if (next.isPresent()) {
                 Territory toBeAdded = next.get();
-
-                if (!territories.contains(toBeAdded)) {
-                    territories.add(toBeAdded);
-                    search(territories.get(territories.size() - 1), territories);
+                if ((toBeAdded.getAllegiance() & (1 << (i + 4) % 8)) != 0) {
+                    if (!territories.contains(toBeAdded)) {
+                        territories.add(toBeAdded);
+                        search(territories.get(territories.size() - 1), territories);
+                    }
                 }
             }
         }
@@ -115,23 +88,19 @@ public enum TerritoryManager {
     }
 
     public void updateAllegiance(Territory origin) {
-        for (int i = 0; i < Direction.values().length; i++) {
+        for (Direction direction : Direction.values()) {
+            int i = direction.ordinal();
             Optional<Territory> next = findAdjacentOf(origin, Direction.values()[i]);
             if (next.isPresent()) {
                 Territory neighbour = next.get();
-                byte b = origin.getAllegiance();
+                byte bOrigin = origin.getAllegiance();
+                byte bNeighbor = neighbour.getAllegiance();
                 if (isFriendly(neighbour.getKingdom(), origin.getKingdom())) {
-                    origin.setAllegiance((byte) (b | (1 << i)));
-                    if (i + 4 < 8)
-                        neighbour.setAllegiance((byte) (b | (1 << (i + 4))));
-                    else
-                        neighbour.setAllegiance((byte) (b | (1 << (i - 4))));
+                    origin.setAllegiance((byte) (bOrigin | (1 << i)));
+                    neighbour.setAllegiance((byte) (bNeighbor | (1 << (i + 4) % 8)));
                 } else {
-                    origin.setAllegiance((byte) (b & ~(1 << (i))));
-                    if (i + 4 < 8)
-                        neighbour.setAllegiance((byte) (b & ~(1 << (i + 4))));
-                    else
-                        neighbour.setAllegiance((byte) (b & ~(1 << (i - 4))));
+                    origin.setAllegiance((byte) (bOrigin & ~(1 << (i))));
+                    neighbour.setAllegiance((byte) (bNeighbor & ~(1 << (i + 4) % 8)));
                 }
             }
         }
@@ -139,7 +108,7 @@ public enum TerritoryManager {
 
     public void add(TerritoryCoordinate coordinate, Territory territory) {
         territories.put(coordinate, territory);
-        //updateAllegiance(territory);
+        updateAllegiance(territory);
     }
 
     public void remove(TerritoryCoordinate coordinate) {
