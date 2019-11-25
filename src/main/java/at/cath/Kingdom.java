@@ -11,8 +11,11 @@ public class Kingdom {
     @Getter
     private String name;
 
+    @Getter
+    private Alliance alliance;
+
     public static Kingdom defaultKingdom() {
-        return new Kingdom("Wilderness");
+        return new Kingdom("Wilderness", null);
     }
 
 }
