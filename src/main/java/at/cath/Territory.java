@@ -1,24 +1,30 @@
 package at.cath;
 
-import at.cath.utility.TerritoryManager;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @RequiredArgsConstructor
 public class Territory {
 
-    //@Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private byte allegiance;
     @NonNull
     private Kingdom kingdom;
     @NonNull
     private TerritoryCoordinate territoryCoordinate;
 
-    public int distanceTo(Territory territory) {
-        return TerritoryManager.getInstance().distanceInTerritories(this, territory);
+    public void updateAllegiance(int bit, boolean friendly, boolean mirrored) {
+        if (!mirrored)
+            allegiance = friendly ? (byte) (allegiance | (1 << bit)) : (byte) (allegiance & ~(1 << (bit)));
+        else
+            allegiance = friendly ? (byte) (allegiance | (1 << (bit + 4) % 8)) : (byte) (allegiance & ~(1 << ((bit + 4) % 8)));
     }
+
+    public boolean getAllegianceBit(int bit) {
+        return (allegiance & (1 << (bit + 4) % 8)) != 0;
+    }
+
+
 }

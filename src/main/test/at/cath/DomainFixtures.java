@@ -1,26 +1,22 @@
 package at.cath;
 
+import at.cath.utility.Direction;
+
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DomainFixtures {
 
     private static final Alliance DEFAULT_ALLIANCE = new Alliance();
 
-    public static List<Territory> getDirectionalTerritories() {
+    public static List<Territory> getCardinalTerritories() {
 
-        TerritoryCoordinate coordOrigin = new TerritoryCoordinate(0, 0);
-        TerritoryCoordinate coordNorth = new TerritoryCoordinate(0, -1);
-        TerritoryCoordinate coordSouth = new TerritoryCoordinate(0, 1);
-        TerritoryCoordinate coordEast = new TerritoryCoordinate(1, 0);
-        TerritoryCoordinate coordWest = new TerritoryCoordinate(-1, 0);
+        return Stream.concat(Arrays.stream(Direction.values()).map(direction -> new Territory(new Kingdom(direction.name(), DEFAULT_ALLIANCE),
+                new TerritoryCoordinate(direction.getXShift(), direction.getZShift()))), Stream.of(new Territory(new Kingdom("ORIGIN", DEFAULT_ALLIANCE),
+                new TerritoryCoordinate(0, 0)))).collect(Collectors.toList());
 
-        Territory terrOrigin = new Territory(new Kingdom("origin", DEFAULT_ALLIANCE), coordOrigin);
-        Territory terrNorth = new Territory(new Kingdom("north", DEFAULT_ALLIANCE), coordNorth);
-        Territory terrSouth = new Territory(new Kingdom("south", DEFAULT_ALLIANCE), coordSouth);
-        Territory terrEast = new Territory(new Kingdom("east", DEFAULT_ALLIANCE), coordEast);
-        Territory terrWest = new Territory(new Kingdom("west", DEFAULT_ALLIANCE), coordWest);
-
-        return List.of(terrOrigin, terrNorth, terrSouth, terrEast, terrWest);
     }
 
 }

@@ -7,13 +7,13 @@ import lombok.Getter;
 public class TerritoryCoordinate {
 
     @Getter
-    private int startChunkX;
+    private int x;
     @Getter
-    private int startChunkZ;
+    private int z;
 
     @Override
     public int hashCode() {
-        return startChunkX ^ (startChunkZ << 16);
+        return x ^ (z << 16);
     }
 
     public boolean equals(Object o) {
@@ -23,24 +23,24 @@ public class TerritoryCoordinate {
             return false;
         } else {
             TerritoryCoordinate other = (TerritoryCoordinate) o;
-            return this.getStartChunkX() == other.getStartChunkX() && this.getStartChunkZ() == other.getStartChunkZ();
+            return this.getX() == other.getX() && this.getZ() == other.getZ();
         }
     }
 
     public int getXMin() {
-        return startChunkX * 512;
+        return x * 512;
     }
 
     public int getXMax() {
-        return (startChunkX + 1) * 512;
+        return (x + 1) * 512;
     }
 
     public int getZMin() {
-        return startChunkZ * 512;
+        return z * 512;
     }
 
     public int getZMax() {
-        return (startChunkZ + 1) * 512;
+        return (z + 1) * 512;
     }
 
     public int getYMin() {
